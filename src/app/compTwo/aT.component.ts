@@ -24,7 +24,7 @@ export class HeroDetailComponent implements OnInit {
   ngOnInit(): void {
 	this.route.paramMap
 	  .switchMap((params: ParamMap) => {
-      console.log(+params.get('id')); // 路由绑定id 添加+号把字符串转化成数字
+      console.log(+params.get('id')); // 路由绑定id 添加
 			return this.heroService.getHero(+params.get('id')); // 传入ID
 		})
 	  .subscribe(hero => this.aacc = hero);

@@ -1,13 +1,27 @@
 import { Injectable } from '@angular/core';
+import { Headers, Http } from '@angular/http';
 
 import { Hero } from '../compTwo/hero';
-import { HEROES } from '../mock-heroes';
+// import { HEROES } from '../mock-heroes';
+import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class HeroService {
-  getHeroes(): Promise<Hero[]> {
-    return Promise.resolve(HEROES);
+  private heroesUrl = 'api/heroes';  // URL to web api
+
+  constructor(private http: Http) { };
+  // getHeroes(): Promise<Hero[]> {
+  //   return Promise.resolve(HEROES);
+  // }
+
+  getHeroes(): Promise<Hero[]> {  // 通过服务获取
+    return this.http.get(this.heroesUrl)
+               .toPromise()
+               .then(response => response.json().data as Hero[])
+               .catch(this.handleError);
   }
+
+
   getHeroesSlowly(): Promise<Hero[]> {
     return new Promise(resolve => {
       // Simulate server latency with 2 second delay
@@ -17,5 +31,10 @@ export class HeroService {
   getHero(id: number): Promise<Hero> {   // 通过id 返回数据
     return this.getHeroes()
                .then(heroes => heroes.find(hero => hero.id === id)); // 对比ID返回相同对象
+  }
+
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error); // for demo purposes only
+    return Promise.reject(error.message || error);
   }
 }

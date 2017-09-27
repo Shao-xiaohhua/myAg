@@ -24,7 +24,7 @@ var HeroDetailComponent = (function () {
         var _this = this;
         this.route.paramMap
             .switchMap(function (params) {
-            console.log(+params.get('id')); // 路由绑定id 添加+号把字符串转化成数字
+            console.log(+params.get('id')); // 路由绑定id 添加
             return _this.heroService.getHero(+params.get('id')); // 传入ID
         })
             .subscribe(function (hero) { return _this.aacc = hero; });
